@@ -1,0 +1,6 @@
+song_title,artist,acousticness,danceability,duration_ms,energy,instrumentalness,key,liveness,loudness,mode,speechiness,tempo,valence
+Mask Off,Future,0.0102,0.833,204600,0.434,0.0219,2,0.165,-8.795,1,0.431,150.062,0.286
+Redbone,Childish Gambino,0.199,0.743,326933,0.359,0.00611,1,0.137,-10.401,1,0.0794,160.083,0.588
+Xanny Family,Future,0.0344,0.838,185707,0.412,0.000234,2,0.159,-7.148,1,0.289,75.044,0.173
+Master Of None,Beach House,0.604,0.494,199413,0.338,0.51,5,0.0922,-15.236,1,0.0261,86.468,0.23
+Parallel Lines,Junior Boys,0.18,0.678,392893,0.561,0.512,5,0.439,-11.648,0,0.0694,174.004,0.904

@@ -1,0 +1,3 @@
+C:/Users/Alvin Wong/CLionProjects/Spottingfy/cmake-build-debug/CMakeFiles/Spottingfy.dir
+C:/Users/Alvin Wong/CLionProjects/Spottingfy/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Alvin Wong/CLionProjects/Spottingfy/cmake-build-debug/CMakeFiles/rebuild_cache.dir
