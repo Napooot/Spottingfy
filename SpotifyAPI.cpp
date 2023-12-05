@@ -104,7 +104,7 @@ void SpotifyAPI::getPlaylist(const QString &accessToken, const QString &playlist
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray responseData = reply->readAll();
             handlePlaylistResponse(responseData);
-            getSongEverything(getAccessToken(), songIds);
+            getSongEverything(getAccessToken(), this->songIds);
 
         } else {
             qDebug() << "Error:" << reply->errorString();
@@ -272,17 +272,16 @@ void SpotifyAPI::handleAudioFeaturesResponse(const QByteArray &responseData) {
     }
 }
 
-//vector<Song> SpotifyAPI::getSongEverything(const QString &accessToken, vector<QString>& songIds){
-//    for (int i = 0; i < songIds.size(); i++){
-//        getAudioFeatures(accessToken, songIds[i]);
-//        getTrackInfo(accessToken, songIds[i]);
-//        Song newSong(songArtist.toStdString(), songTitle.toStdString(), acousticness.toStdString(), danceability.toStdString(), duration_ms.toStdString(), energy.toStdString(), instrumentalness.toStdString(), key.toStdString(), liveliness.toStdString(), loudness.toStdString(), mode.toStdString(), speechiness.toStdString(), tempo.toStdString(), valence.toStdString());
-//        songsInPlaylist.push_back(newSong);
-//    }
-//    vector<Song> newPlayList = songsInPlaylist;
-//    qDebug() << "Songs in Playlist size" << songsInPlaylist.size();
-//    return songsInPlaylist;
-//}
+void SpotifyAPI::getSongEverything(const QString &accessToken, QVector<QString>& songIds){
+    for (int i = 0; i < songIds.size(); i++){
+        getAudioFeatures(accessToken, songIds[i]);
+        getTrackInfo(accessToken, songIds[i]);
+        Song newSong(songArtist.toStdString(), songTitle.toStdString(), acousticness.toStdString(), danceability.toStdString(), duration_ms.toStdString(), energy.toStdString(), instrumentalness.toStdString(), key.toStdString(), liveliness.toStdString(), loudness.toStdString(), mode.toStdString(), speechiness.toStdString(), tempo.toStdString(), valence.toStdString());
+        songsInPlaylist.push_back(newSong);
+    }
+    vector<Song> newPlayList = songsInPlaylist;
+    qDebug() << "Songs in Playlist size" << songsInPlaylist.size();
+}
 
 //void SpotifyAPI::getSongEverything(const QString &accessToken, const QVector<QString> &songIds) {
 //    if (songIds.size() == 0) {

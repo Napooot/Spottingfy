@@ -41,8 +41,8 @@ public:
     void getPlaylist(const QString &accessToken, const QString &playlistID);
     void getTrackInfo(const QString &accessToken, const QString &trackId);
     void getAudioFeatures(const QString &accessToken, const QString &trackId);
-//    vector<Song> getSongEverything(const QString &accessToken, vector<QString>&songIds);
-    void getSongEverything(const QString &accessToken, const QVector<QString> &songIds);
+    void getSongEverything(const QString &accessToken, QVector<QString>&songIds);
+//    void getSongEverything(const QString &accessToken, const QVector<QString> &songIds);
 
     // helper functions for handling responses
     void handleAccessTokenResponse(const QByteArray &responseData);
