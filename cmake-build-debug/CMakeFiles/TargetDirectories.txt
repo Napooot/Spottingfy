@@ -1,0 +1,9 @@
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/NAR_Spottingfy.dir
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/list_install_components.dir
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/install.dir
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/install/local.dir
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/install/strip.dir
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/NAR_Spottingfy_autogen_timestamp_deps.dir
+/Users/rachelpu/CLionProjects/DATA_STRUCTURES/SPOTTINGFY_NAR/cmake-build-debug/CMakeFiles/NAR_Spottingfy_autogen.dir
