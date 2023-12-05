@@ -138,24 +138,30 @@ vector<Song> Song::createPlayList(const string &fileName) {
     return dataBase;
 }
 
-//returns index of song
+//returns index of song, if there are dupes, do random between upper and lower bound
 int Song::binarySearch(vector<Song> &dataBase, const string &topic, const string& targetValue) {
     int low = 0;
     int high = dataBase.size()-1;
     const double newTargetValue = stod(targetValue);
 
+    //sorting doubles so need to check for doubles
     double epsilon = 1e-9;
     while(low <= high) {
         int mid = low + (high-low) / 2;
         if( abs(stod(dataBase[mid].attributeVals[topic]) - newTargetValue) < epsilon) {
             int lowIndex = mid;
             int highIndex = mid;
+
+            //get upperbound
             while(highIndex + 1 < dataBase.size() && stod(dataBase[highIndex+1].attributeVals[topic]) == newTargetValue) {
                 highIndex++;
             }
+
+            //get lowerbound
             while(lowIndex - 1 >= 0 && stod(dataBase[lowIndex-1].attributeVals[topic]) == newTargetValue) {
                 lowIndex--;
             }
+            //return random
             int randNum = rand()%(highIndex-lowIndex + 1) + lowIndex;
             return randNum;
         } else if (stod(dataBase[mid].attributeVals[topic]) < newTargetValue ) {
@@ -165,18 +171,20 @@ int Song::binarySearch(vector<Song> &dataBase, const string &topic, const string
         }
     }
 
+    //if no exact match found come here
     try {
         if( abs(stod(targetValue) - stod(dataBase[low].attributeVals[topic])) < abs(stod(targetValue) - stod(dataBase[high].attributeVals[topic]))) {
             return low;
         } else {
             return high;
         }
-    } catch (const std::invalid_argument& e) {
+    } catch (const std::invalid_argument& e) { //should never come here
         std::cerr << "Invalid argument error: " << e.what() <<  " Values: " << targetValue << ", " << dataBase[low].attributeVals[topic] << ", " <<  dataBase[high].attributeVals[topic] << endl;
         return low;
     }
 }
 
+//add edges, just inDegrees
 void Song::addEdges(Song &fromSong, const int &toSongEstimateIndex, vector<Song> &dataBase) {
     const int spread = 50; //increase spread to make song recommendations more varied and decrease for vice versa
 
@@ -197,6 +205,9 @@ vector<string> Song::recommendPlayList(vector<Song> &userList, vector<Song> &dat
         auto start = chrono::high_resolution_clock::now();
         cout << topic << " Sort started. " ;
 //        dataBase = Song::quickSort(dataBase,topic);
+//        dataBase = Song::mergeSort(dataBase,topic);
+
+        //need to use standard sorting as our sorts take too long for users ~30 seconds per sort for merge, 2 - 1 min per sort for quicksort
         sort(dataBase.begin(), dataBase.end(), [topic](const Song& lhs, const Song& rhs) {
             double lhsValue = stod(lhs.attributeVals.at(topic));
             double rhsValue = stod(rhs.attributeVals.at(topic));
@@ -206,16 +217,19 @@ vector<string> Song::recommendPlayList(vector<Song> &userList, vector<Song> &dat
         auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
         cout << "Sort finished. Time taken in seconds: " << duration.count()/1000000.0 << endl;
 
+        //add edges between userlist and database
         for (Song &mySong: userList) {
             int songIndex = Song::binarySearch(dataBase, topic, mySong.attributeVals[topic]);
             Song::addEdges(mySong, songIndex, dataBase);
         }
     }
 
+    //sort based on inDegrees
     sort(dataBase.begin(), dataBase.end(), [](const Song& lhs, const Song& rhs) {
         return lhs.inDegree < rhs.inDegree;
     });
 
+    //set new playlist size
     int newPlaylistSize;
     if(userList.size() < 10) {
         newPlaylistSize = userList.size();
@@ -223,8 +237,11 @@ vector<string> Song::recommendPlayList(vector<Song> &userList, vector<Song> &dat
         newPlaylistSize = userList.size() - userList.size()%5;
     }
 
+    //add all new songs to new recommendations vector
     for(int i = dataBase.size()-1; i > dataBase.size()-newPlaylistSize; i--) {
         newRecommendations.push_back(dataBase[i].attributeVals["songTitle"] + " by " + dataBase[i].attributeVals["songArtist"]);
     }
+
+    //return new recommendations
     return newRecommendations;
 }

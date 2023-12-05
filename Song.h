@@ -23,7 +23,7 @@ class Song {
              string mode, string speechiness, string tempo, string valence);
         Song(vector<string> variables);
 
-    /*==================================MANIPULATORS (SORTING)========================================*/
+    /*==================================MANIPULATORS===================================================*/
         static vector<Song> mergeSort(vector<Song> &dataBase, const string& topic);
         static vector<Song> quickSort(vector<Song> &dataBase, const string& topic);
         static int binarySearch(vector<Song> &dataBase, const string &topic, const string& targetValue);
