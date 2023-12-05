@@ -3,6 +3,7 @@
 Song::Song(string songTitle, string songArtist, string acousticness, string danceability, string duration_ms,
            string energy, string instrumentalness, string key, string liveliness, string loudness,
            string mode, string speechiness, string tempo, string valence) {
+    this->songTitle = songTitle;
     attributeVals["songArtist"] = songArtist;
     attributeVals["songTitle"] = songTitle;
     attributeVals["acousticness"] = acousticness;

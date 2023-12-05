@@ -20,13 +20,12 @@ class SpotifyAPI : public QObject
 {
     Q_OBJECT
 
-
 public:
     SpotifyAPI(QObject *parent = nullptr) : QObject(parent) {}
 
     QString accessToken;
     QString playlistID;
-    vector<QString> songIds;
+    QVector<QString> songIds;
     vector<Song> songsInPlaylist;
 
     QString getAccessToken();
@@ -42,7 +41,8 @@ public:
     void getPlaylist(const QString &accessToken, const QString &playlistID);
     void getTrackInfo(const QString &accessToken, const QString &trackId);
     void getAudioFeatures(const QString &accessToken, const QString &trackId);
-    void getSongEverything(const QString &accessToken, vector<QString>&songIds);
+//    vector<Song> getSongEverything(const QString &accessToken, vector<QString>&songIds);
+    void getSongEverything(const QString &accessToken, const QVector<QString> &songIds);
 
     // helper functions for handling responses
     void handleAccessTokenResponse(const QByteArray &responseData);

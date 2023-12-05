@@ -37,9 +37,15 @@ void MainWindow::spotifyAuthorization(){
 
 void MainWindow::callSpotifyAPI(){
     // if the push button clicked is successfully, proceed (may change later...)
-    if (searchBarWidget->searchPushButtonClicked() != "false"){
+    vector<Song> newSongs;
+    vector<QString> songIdVectors;
+    if (searchBarWidget->searchPushButtonClicked() != "false") {
         spotifyAPI.setPlaylistID(searchBarWidget->searchPushButtonClicked());
         spotifyAPI.getPlaylist(spotifyAPI.getAccessToken(), spotifyAPI.getPlaylistID());
+
+    }//        spotifyAPI.getSongEverything(spotifyAPI.getAccessToken(), songIdVectors);
+    qDebug() << spotifyAPI.songIds;
+
 
         // calling the algorithms
 //        vector<Song> dataBase = Song::createPlayList("../Spottingfy_dataset.csv");
@@ -56,7 +62,7 @@ void MainWindow::callSpotifyAPI(){
         newPlaylistWidget->show();
         newPlaylistWidget->setMinimumSize(500,375);
     }
-}
+
 
 void MainWindow::clearSpotifyPlaylist(){
     searchBarWidget->input_line->clear();

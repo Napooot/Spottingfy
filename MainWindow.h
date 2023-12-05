@@ -38,7 +38,7 @@ private:
     new_playlist *newPlaylistWidget;
     QVBoxLayout *mainLayout;
     QString CLIENT_ID = "d13f67f2fc5c4bd9ad96bfadc2f2e9bc";
-    QString CLIENT_SECRET = "8df809c5c56e4fb8afd07531b4e35637";
+    QString CLIENT_SECRET = "9006a972a96c4441bafe1b5385376375";
     string ACCESS_TOKEN;
 //    vector<Song> newSongList;
 

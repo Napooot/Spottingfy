@@ -14,9 +14,12 @@
 using namespace std;
 
 class Song {
+
 public:
     unordered_map<string, string> attributeVals;
     double inDegree;
+    string songTitle;
+
 
     /*=============================CONSTRUCTORS======================================================*/
     Song(string songArtist, string songTitle, string acousticness, string danceability, string duration_ms,

@@ -10,6 +10,7 @@ QString SpotifyAPI::getPlaylistID(){
     return this->playlistID;
 }
 
+
 // clearing data for potential new spotify data
 void SpotifyAPI::clearEverything(){
     playlistID.clear();
@@ -99,10 +100,11 @@ void SpotifyAPI::getPlaylist(const QString &accessToken, const QString &playlist
     QNetworkReply *reply = manager->get(request);
 
     // Handle the response
-    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+    connect(reply, &QNetworkReply::finished, this, [=]() {
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray responseData = reply->readAll();
             handlePlaylistResponse(responseData);
+            getSongEverything(getAccessToken(), songIds);
 
         } else {
             qDebug() << "Error:" << reply->errorString();
@@ -137,7 +139,6 @@ void SpotifyAPI::handlePlaylistResponse(const QByteArray &responseData) {
                     if (trackObj.contains("track") && trackObj["track"].isObject()) {
                         QString trackId = trackObj["track"].toObject().value("id").toString();
                         songIds.push_back(trackId);
-                        qDebug() << songIds;
                     } else {
                         qDebug() << "Error: Missing 'id' field in track object";
                     }
@@ -170,7 +171,6 @@ void SpotifyAPI::getTrackInfo(const QString &accessToken, const QString &trackId
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray responseData = reply->readAll();
-            qDebug() << "Error:";
             handleTrackInfoResponse(responseData);
         } else {
             qDebug() << "Error:" << reply->errorString();
@@ -202,8 +202,8 @@ void SpotifyAPI::handleTrackInfoResponse(const QByteArray &responseData) {
         }
 
         // Print or save the extracted values
-        qDebug() << "Song Artist:" << songArtist;
-        qDebug() << "Song Name:" << songTitle;
+//        qDebug() << "Song Artist:" << songArtist;
+//        qDebug() << "Song Name:" << songTitle;
     } else {
         qDebug() << "Error: Unable to parse JSON response or it is not an object";
     }
@@ -255,30 +255,119 @@ void SpotifyAPI::handleAudioFeaturesResponse(const QByteArray &responseData) {
         tempo = QString::number(featuresObj.value("tempo").toDouble());
         valence = QString::number(featuresObj.value("valence").toDouble());
 
-        // Print the extracted values (you can replace this with saving them into variables)
-        // qDebug() << "Acousticness:" << acousticness;
-        // qDebug() << "Danceability:" << danceability;
-        // qDebug() << "Duration (ms):" << duration_ms;
-        // qDebug() << "Energy:" << energy;
-        // qDebug() << "Instrumentalness:" << instrumentalness;
-        // qDebug() << "Key:" << key;
-        // qDebug() << "Liveliness:" << liveliness;
-        // qDebug() << "Loudness:" << loudness;
-        // qDebug() << "Mode:" << mode;
-        // qDebug() << "Speechiness:" << speechiness;
-        // qDebug() << "Tempo:" << tempo;
-        // qDebug() << "Valence:" << valence;
+//         qDebug() << "Acousticness:" << acousticness;
+//         qDebug() << "Danceability:" << danceability;
+//         qDebug() << "Duration (ms):" << duration_ms;
+//         qDebug() << "Energy:" << energy;
+//         qDebug() << "Instrumentalness:" << instrumentalness;
+//         qDebug() << "Key:" << key;
+//         qDebug() << "Liveliness:" << liveliness;
+//         qDebug() << "Loudness:" << loudness;
+//         qDebug() << "Mode:" << mode;
+//         qDebug() << "Speechiness:" << speechiness;
+//         qDebug() << "Tempo:" << tempo;
+//         qDebug() << "Valence:" << valence;
     } else {
         qDebug() << "Error: Unable to parse JSON response or it is not an object";
     }
 }
 
-void SpotifyAPI::getSongEverything(const QString &accessToken, vector<QString>& songIds){
-    for (int i = 0; i < songIds.size(); i++){
-        getAudioFeatures(accessToken, songIds[i]);
-        getTrackInfo(accessToken, songIds[i]);
-        Song newSong(songArtist.toStdString(), songTitle.toStdString(), acousticness.toStdString(), danceability.toStdString(), duration_ms.toStdString(), energy.toStdString(), instrumentalness.toStdString(), key.toStdString(), liveliness.toStdString(), loudness.toStdString(), mode.toStdString(), speechiness.toStdString(), tempo.toStdString(), valence.toStdString());
-        songsInPlaylist.push_back(newSong);
-    }
-    qDebug() << "Songs in Playlist size" << songsInPlaylist.size();
-}
+//vector<Song> SpotifyAPI::getSongEverything(const QString &accessToken, vector<QString>& songIds){
+//    for (int i = 0; i < songIds.size(); i++){
+//        getAudioFeatures(accessToken, songIds[i]);
+//        getTrackInfo(accessToken, songIds[i]);
+//        Song newSong(songArtist.toStdString(), songTitle.toStdString(), acousticness.toStdString(), danceability.toStdString(), duration_ms.toStdString(), energy.toStdString(), instrumentalness.toStdString(), key.toStdString(), liveliness.toStdString(), loudness.toStdString(), mode.toStdString(), speechiness.toStdString(), tempo.toStdString(), valence.toStdString());
+//        songsInPlaylist.push_back(newSong);
+//    }
+//    vector<Song> newPlayList = songsInPlaylist;
+//    qDebug() << "Songs in Playlist size" << songsInPlaylist.size();
+//    return songsInPlaylist;
+//}
+
+//void SpotifyAPI::getSongEverything(const QString &accessToken, const QVector<QString> &songIds) {
+//    if (songIds.size() == 0) {
+//        qDebug() << "Error: No song IDs provided";
+//        return;
+//    }
+//    else {
+//        QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+//        // track information request
+//        QUrl trackUrl("https://api.spotify.com/v1/tracks");
+//        QUrlQuery trackQuery;
+//        trackQuery.addQueryItem("ids", songIds.join(","));
+//        trackUrl.setQuery(trackQuery);
+//        QNetworkRequest trackRequest(trackUrl);
+//        trackRequest.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
+//        QNetworkReply *trackReply = manager->get(trackRequest);
+//        connect(trackReply, &QNetworkReply::finished, this, [this, trackReply, songIds]() {
+//            if (trackReply->error() == QNetworkReply::NoError) {
+//                QByteArray trackResponseData = trackReply->readAll();
+//                handleTrackInfoResponse(trackResponseData);
+//            }
+//        }
+//    }
+//}
+//    // Create a QNetworkAccessManager
+//    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+//
+//    // Set up the request for track information
+//    QUrl trackUrl("https://api.spotify.com/v1/tracks");
+//    QUrlQuery trackQuery;
+//    trackQuery.addQueryItem("ids", songIds.join(","));
+//    trackUrl.setQuery(trackQuery);
+//
+//    QNetworkRequest trackRequest(trackUrl);
+//    trackRequest.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
+//
+//    // Make the GET request for track information
+//    QNetworkReply *trackReply = manager->get(trackRequest);
+//
+//    // Handle the response
+//    connect(trackReply, &QNetworkReply::finished, this, [this, trackReply, songIds]() {
+//        if (trackReply->error() == QNetworkReply::NoError) {
+//            QByteArray trackResponseData = trackReply->readAll();
+//            handleTrackInfoResponse(trackResponseData);
+//
+//            // Now, make the request for audio features using the extracted track IDs
+//            QStringList trackIds;
+//            for (const Song &song : songsInPlaylist) {
+//                trackIds.append(song.trackId);
+//            }
+//
+//            // Set up the request for audio features
+//            QUrl featuresUrl("https://api.spotify.com/v1/audio-features");
+//            QUrlQuery featuresQuery;
+//            featuresQuery.addQueryItem("ids", trackIds.join(","));
+//            featuresUrl.setQuery(featuresQuery);
+//
+//            QNetworkRequest featuresRequest(featuresUrl);
+//            featuresRequest.setRawHeader("Authorization", "Bearer " + this->accessToken.toUtf8());
+//
+//            // Make the GET request for audio features
+//            QNetworkReply *featuresReply = manager->get(featuresRequest);
+//
+//            // Handle the response
+//            connect(featuresReply, &QNetworkReply::finished, this, [this, featuresReply]() {
+//                if (featuresReply->error() == QNetworkReply::NoError) {
+//                    QByteArray featuresResponseData = featuresReply->readAll();
+//                    handleAudioFeaturesResponse(featuresResponseData);
+//
+//                    // Now, you have all the information for each song
+//                    qDebug() << "Songs in Playlist size" << songsInPlaylist.size();
+//
+//                    // Clean up
+//                    featuresReply->deleteLater();
+//                } else {
+//                    qDebug() << "Error fetching audio features:" << featuresReply->errorString();
+//                }
+//
+//                // Clean up
+//                trackReply->deleteLater();
+//            });
+//        } else {
+//            qDebug() << "Error fetching track information:" << trackReply->errorString();
+//            // Clean up
+//            trackReply->deleteLater();
+//        }
+//    });
+//}
